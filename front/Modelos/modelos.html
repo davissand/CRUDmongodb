@@ -24,11 +24,11 @@
                 <a class="nav-link" href="/">Clientes</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Consultas</a>
+                <a class="nav-link" href="#">Modelos</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown link
+                  Consultas
                 </a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="#">Action</a></li>
@@ -41,20 +41,39 @@
         </div>
       </nav>
     
-    <h1>Resultados de la API:</h1>
+    
     <div class="container">
-    <table id="resultado-tabla" class="table">
+        <h1>Modelos</h1>
+        <div class="row">
+          <div class="col">
+            <form id="modelo-form">
+                <div class="mb-3">
+                    <label for="codigo" class="form-label">Código:</label>
+                    <input type="text" class="form-control" id="codigo" name="codigo" required>
+                </div>
+                <div class="mb-3">
+                    <label for="marca" class="form-label">Marca:</label>
+                    <input type="text" class="form-control" id="marca" name="marca" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Modelo</button>
+            </form>
+      </div>
+      <div class="col">
+    <table id="modelos-tabla" class="table">
         <thead>
             <tr>
+                <th>Codigo</th>
                 <th>Marca</th>
-                <th>Año</th>
-                <th>Placa</th>
+                <th>Acciones</th>
             </tr>
         </thead>
-        <tbody id="tabla-cuerpo">
+        <tbody id="modelos-tbody">
         </tbody>
     </table>
+  </div>
+  </div>
 </div>
-    <script src="script.js"></script>
+
+    <script src="modelos.js"></script>
 </body>
 </html>

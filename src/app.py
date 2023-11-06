@@ -126,6 +126,80 @@ def get_vehiculos_mayores(fecha):
     response = json_util.dumps(vehiculos)
     return Response(response, mimetype="application/json")
 
+@app.route('/vehiculos', methods=['POST'])
+def agregar_vehiculo():
+    # Obtener los datos del formulario
+    data = request.get_json()
+
+    # Insertar los datos en la colección Vehiculo de MongoDB
+    try:
+        vehiculo_id = mongo.db.Vehiculo.insert_one(data)
+        respuesta = {
+            'mensaje': 'Vehículo insertado correctamente',
+            'vehiculo_id': str(vehiculo_id)
+        }
+        return jsonify(respuesta), 201
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Error al insertar el vehículo'}), 500
+    
+@app.route('/clientes', methods=['POST'])
+def agregar_persona():
+    # Obtener los datos del formulario
+    data = request.get_json()
+
+    # Insertar los datos en la colección Persona de MongoDB
+    try:
+        persona_id = mongo.db.Cliente.insert_one(data).inserted_id
+        respuesta = {
+            'mensaje': 'Persona insertada correctamente',
+            'persona_id': str(persona_id)
+        }
+        return jsonify(respuesta), 201
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Error al insertar la persona'}), 500
+    
+@app.route('/clientes/<id>', methods=['DELETE'])
+def eliminar_cliente(id):
+    try:
+        # Convertir el ID de string a ObjectId
+        cliente_id = ObjectId(id)
+        # Eliminar el cliente por su ID
+        resultado = mongo.db.Cliente.delete_one({'_id': cliente_id})
+        if resultado.deleted_count == 1:
+            return jsonify({'mensaje': 'Cliente eliminado correctamente'}), 200
+        else:
+            return jsonify({'error': 'Cliente no encontrado'}), 404
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Error al eliminar el cliente'}), 500
+
+@app.route('/vehiculos-all', methods=['GET'])
+def get_all_vehiculos():
+    vehiculos =  list(mongo.db.Vehiculo.find())
+    response = json_util.dumps(vehiculos)
+    return Response(response, mimetype="application/json")
+
+@app.route('/clientes-all', methods=['GET'])
+def get_all_clientes():
+    vehiculos =  list(mongo.db.Cliente.find())
+    response = json_util.dumps(vehiculos)
+    return Response(response, mimetype="application/json")
+
+@app.route('/modelos', methods=['GET'])
+def get_modelos():
+    modelos =  list(mongo.db.Modelo.find())
+    response = json_util.dumps(modelos)
+    return Response(response, mimetype="application/json")
+
+@app.route('/modelos', methods=['POST'])
+def get_modelos():
+    modelos =  list(mongo.db.Modelo.find())
+    response = json_util.dumps(modelos)
+    return Response(response, mimetype="application/json")
+
+
 
 @app.errorhandler(404)
 def not_found(error=None):

@@ -26,4 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(error => {
         console.error('Error al obtener datos:', error);
     });
+
 });
+
+
