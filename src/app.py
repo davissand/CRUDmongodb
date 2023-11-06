@@ -194,12 +194,36 @@ def get_modelos():
     return Response(response, mimetype="application/json")
 
 @app.route('/modelos', methods=['POST'])
-def get_modelos():
-    modelos =  list(mongo.db.Modelo.find())
-    response = json_util.dumps(modelos)
-    return Response(response, mimetype="application/json")
+def agregar_modelo():
+    # Obtener los datos del formulario
+    data = request.get_json()
 
+    # Insertar los datos en la colección Modelo de MongoDB
+    try:
+        modelo_id = mongo.db.Modelo.insert_one(data).inserted_id
+        respuesta = {
+            'mensaje': 'Modelo agregado correctamente',
+            'modelo_id': str(modelo_id)
+        }
+        return jsonify(respuesta), 201
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Error al agregar el modelo'}), 500
 
+@app.route('/modelos/<id>', methods=['DELETE'])
+def eliminar_modelo(id):
+    try:
+        # Convertir el ID de string a ObjectId
+        cliente_id = ObjectId(id)
+        # Eliminar el cliente por su ID
+        resultado = mongo.db.Modelo.delete_one({'codigo': id})
+        if resultado.deleted_count == 1:
+            return jsonify({'mensaje': 'Cliente eliminado correctamente'}), 200
+        else:
+            return jsonify({'error': 'Cliente no encontrado'}), 404
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Error al eliminar el cliente'}), 500
 
 @app.errorhandler(404)
 def not_found(error=None):

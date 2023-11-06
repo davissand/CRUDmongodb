@@ -41,7 +41,7 @@ function cargarModelos(){
                 <td>${resultado.marca}</td>
                 
                 <td>
-                        <button class="btn btn-danger" onclick="eliminarCliente('${resultado._id}')">Eliminar</button>
+                        <button class="btn btn-danger" onclick="eliminarModelo('${resultado.codigo}')">Eliminar</button>
                     </td>
             `;
             tablaCuerpo.appendChild(fila);
@@ -55,21 +55,15 @@ function cargarModelos(){
     const formulario = document.getElementById('modelo-form');
     formulario.addEventListener('submit', event => {
         event.preventDefault();
-
-        const dui = document.getElementById('dui').value;
-        const nombre = document.getElementById('nombre').value;
-        const telefono = document.getElementById('telefono').value;
-        const direccion = document.getElementById('direccion').value;
+        const codigo = document.getElementById('codigo').value;
+        const marca = document.getElementById('marca').value;
 
         const data = {
-            dui: dui,
-            nombre: nombre,
-            telefono: telefono,
-            direccion: direccion
+            codigo: codigo,
+            marca: marca
         };
-
         // Enviar los datos al backend
-        fetch(BASE_URL+'/clientes', {
+        fetch(BASE_URL+'/modelos', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -78,7 +72,7 @@ function cargarModelos(){
         })
         .then(response => response.json())
         .then(resultado => {
-            console.log('Persona insertada:', resultado);
+            console.log('Modelo insertada:', resultado);
             cargarModelos();
             // Puedes hacer algo con el resultado, como mostrar un mensaje de éxito
         })
